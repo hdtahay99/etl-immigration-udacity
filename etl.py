@@ -540,6 +540,7 @@ def process_fact(spark, input_dim_data, output_fact_data):
     dim_mode    = spark.read.parquet(input_dim_data['mode'])
     dim_airport = spark.read.parquet(input_dim_data['airport'])
     dim_city    = spark.read.parquet(input_dim_data['city'])
+    dim_city2   = spark.read.parquet(input_dim_data['city'])
     
     ### Get unique state_code for join in the fact table
     dim_city = dim_city.dropDuplicates(subset=['state_code'])
@@ -622,8 +623,7 @@ def process_fact(spark, input_dim_data, output_fact_data):
     
     print("*****process fact data completed*****\n")
     
-    dim_city  = spark.read.parquet(input_dim_data['city'])
-    dim_city.createOrReplaceTempView("city")
+    dim_city2.createOrReplaceTempView("cty")
 
     print("""\n\n
     The following analysis shows us the pattern of cities by race and the number of inhabitants who were born abroad. 
@@ -635,7 +635,7 @@ def process_fact(spark, input_dim_data, output_fact_data):
 
     print(spark.sql("""
     SELECT c.city, c.race, count(c.foreign_born) foreing_born
-    FROM fact f inner join city c on f.i94addr = c.state_code
+    FROM fact f inner join cty c on f.i94addr = c.state_code
     GROUP BY c.city, c.race
     ORDER BY count(c.foreign_born) desc
     """).limit(10).toPandas())
