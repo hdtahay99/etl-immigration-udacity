@@ -628,10 +628,10 @@ def process_fact(spark, input_dim_data, output_fact_data):
     """)
 
     print(spark.sql("""
-    SELECT c.city, c.race, count(c.*) foreing_born
+    SELECT c.city, c.race, count(c.race) foreing_born_count
     FROM fact f inner join cty c on f.i94addr = c.state_code
     GROUP BY c.city, c.race
-    ORDER BY count(c.*) desc
+    ORDER BY count(c.race) desc
     """).show(10))
 
     fact.write.mode("overwrite").partitionBy('yr', 'mnth', 'us_stt').parquet(f"{output_fact_data}fact_immigration")
