@@ -578,7 +578,8 @@ def process_fact(spark, input_dim_data, output_fact_data):
     dim_airport.createOrReplaceTempView("airport")
     dim_city.createOrReplaceTempView("city")
     df_clean.createOrReplaceTempView("fact")
-    
+    dim_city2.createOrReplaceTempView("cty")
+
     
     fact = spark.sql("""
     SELECT 
@@ -618,13 +619,6 @@ def process_fact(spark, input_dim_data, output_fact_data):
     """)
     
     #print(f"Fact Count: {fact.count()}\n")
-
-    fact.write.mode("overwrite").partitionBy('yr', 'mnth', 'us_stt').parquet(f"{output_fact_data}fact_immigration")
-    
-    print("*****process fact data completed*****\n")
-    
-    dim_city2.createOrReplaceTempView("cty")
-
     print("""\n\n
     The following analysis shows us the pattern of cities by race and the number of inhabitants who were born abroad. 
     It is possible that the same culture and the fact that there is a good percentage of inhabitants born abroad, 
@@ -638,8 +632,11 @@ def process_fact(spark, input_dim_data, output_fact_data):
     FROM fact f inner join cty c on f.i94addr = c.state_code
     GROUP BY c.city, c.race
     ORDER BY count(c.*) desc
-    """).limit(10).toPandas())
+    """).show(10))
 
+    fact.write.mode("overwrite").partitionBy('yr', 'mnth', 'us_stt').parquet(f"{output_fact_data}fact_immigration")
+    
+    print("*****process fact data completed*****\n")
     
 def process_qa(spark, input_qa):
     """
