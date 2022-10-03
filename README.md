@@ -1,5 +1,8 @@
 ## Immigration ETL
 
+[GitHub Repository](https://github.com/hdtahay99/etl-immigration-udacity)
+
+
 For test o execute the pipeline, please run the follow code:
 
 ```
@@ -19,7 +22,7 @@ python etl.py
 
     - Airport Code Table: This is a simple table of airport codes and corresponding cities.
 
-#### Dictionary Immigration Data
+#### Immigration Data
 - I94YR - 4 digit year
 - I94MON - Numeric month
 - I94CIT & I94RES - This format shows all the valid and invalid codes for processing
@@ -64,6 +67,9 @@ python etl.py
 ![image info](ModelFactImmigration.png)
 - the model is composed of 5 dimensions, of which are related to the fact table, dimensions such as dim_visa, dim_mode, although they are short, they were decided to leave, because it is easier to maintain, than to leave them specifically in a cleaning routine, as well as those of aiport that were also added or those of city that were added instead of generating another dimension and for the columns that do not contain a value only "TO BE DETERMINATED" or "-1, -1.0" were defined for strings as numeric.
  
+### Purpose of the final Model
+- The purpose of the model is to obtain the relationship of the immigration data, between the ports of arrival and where the immigrants settle. In this way, characteristics can be obtained to be consumed by demographic analysis tools or in terms of analyzing the trend of people, if they move by quality, race, population, etc.
+
 
 3. Model Conclusions
     - 

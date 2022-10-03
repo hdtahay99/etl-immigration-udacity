@@ -1,0 +1,72 @@
+DATA DICTIONARY FOR IMMIGRATION MODEL
+
+dim_visa
+ |-- Code (Integer) : Primary Key
+ |-- Visa (String)  : Name of the visa code. Possible values are: (BUSINESS, PLEASURE, STUDENT)
+ 
+dim_mode
+ |-- Code (Integer) : Primary Key
+ |-- Visa (String)  : Name of the mode code. Possible values are: (AIR, SEA, LAND, NOT REPORTED)
+ 
+ dim_country
+ |-- Code (Integer) : Primary Key
+ |-- Country (String) : Name of the country. Possible values are: (AUSTRALIA, BAHAMAS, ...)
+ 
+ dim_airport
+ |-- ident (string) : Airport identified.
+ |-- type (string) : Type of airport.
+ |-- name (string) : Name of the airport.
+ |-- elevation_ft (integer) : Elevation of the airport.
+ |-- iso_country (string) : Country code that the airport is. 
+ |-- municipality (string) : Name of the city closest to the airport.
+ |-- gps_code (string) : Gps code of the airport. 
+ |-- iata_code (string) : iata_code that appears to airplane tickets and baggages.
+ |-- latitude (double) : latitude coordinate.
+ |-- longitude (double) : longitude coordinate.
+ |-- state (string) : State where the airport is located
+ |-- local_code (string) : Primary Key - The local code that identifies the airport
+ 
+ dim_city
+ |-- city (string) : Name of the city.
+ |-- median_age (double) : Median age of the population.
+ |-- male_population (integer) : Number of male population.
+ |-- female_population (integer) : Number of female population.
+ |-- total_population (integer) : Number of total population.
+ |-- number_of_veterans (integer) : Number of veterans.
+ |-- foreign_born (integer) : Number of foreign born residents.
+ |-- average_household_size (double) : Average size of a household.
+ |-- state_code (string) : Primary Key - Code of state city
+ |-- race (string) : Racial category selected by respondants.
+ |-- count (integer) : Number of respondants
+ |-- state (string) : Name of the state. 
+ 
+ fact_table
+ |-- yr (double) : Year
+ |-- mnth (double) : Month 
+ |-- cty_cntry (long) : Foreign Key related with the country dimension, that the visitor was born. 
+ |-- resdnc_cntry (double) : A code that explain where the visitor resides in. 
+ |-- prt (string) : Foreign Key related with the airport dimension.
+ |-- arrvl_dt (string) : Arrival date in USA. 
+ |-- arrvl_md (long) : Foreing Key related with the mode dimension, is the mode of transportation (AIR, SEA, ...)
+ |-- us_stt (string) : Foreing Key related with the city dimension, city where the entry port of the traveller is located.
+ |-- dprtr_dt (string) : Is the Departure Date from the USA.
+ |-- rpndnt_age (double) : Age of Respondent in Year
+ |-- vs_typ_id (long) :Foreing Key related with the visa dimension, three categories (BUSINESS, PLEASURE, STUDENT).
+ |-- cnt (double) : Use for summary, but represent the count of immigrants.
+ |-- dt_fl (string) : Character Date Field.
+ |-- vs_issd_stt (string) : Department of State where where Visa was issued.
+ |-- occptn (string) : Occupation that will be performed in U.S.
+ |-- arrvl_flg (string) : Arrival Flag - admitted or paroled into the U.S.
+ |-- dprtr_flg (string) : Departure Flag - Departed, lost I-94 or is deceased.
+ |-- updt_flg (string) :  Update Flag - Either apprehended, overstayed, adjusted to perm residence. 
+ |-- arrvl_dprtr_flg (string) : Match flag - Match of arrival and departure records.
+ |-- brth_yr (double) :  4 digit year of birth.
+ |-- allwd_dt (string) : Character Date Field - Date to which admitted to U.S. (allowed to stay until).
+ |-- gndr (string) : Non-immigrant sex.
+ |-- ins_nmbr (string) : INS number.
+ |-- arln (string) : Airline used to arrive in U.S.
+ |-- admssn_nmbr (double) : Admission Number
+ |-- flght_nmbr (string) : Flight number of Airline used to arrive in U.S.
+ |-- vs_typ (string) : Class of admission legally admitting the non-immigrant to temporarily stay in U.S.
+
+ 

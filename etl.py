@@ -621,11 +621,29 @@ def process_fact(spark, input_dim_data, output_fact_data):
     fact.write.mode("overwrite").partitionBy('yr', 'mnth', 'us_stt').parquet(f"{output_fact_data}fact_immigration")
     
     print("*****process fact data completed*****\n")
+    
+    dim_city  = spark.read.parquet(input_dim_data['city'])
+    dim_city.createOrReplaceTempView("city")
+
+    print("""\n\n
+    The following analysis shows us the pattern of cities by race and the number of inhabitants who were born abroad. 
+    It is possible that the same culture and the fact that there is a good percentage of inhabitants born abroad, 
+    facilitate the attention of immigrants to choose to settle in those places. In addition, see the race of the 
+    inhabitants, some can be noted that they belong to the American Indians, who in fact have a history and originate
+    from migrants.\n
+    """)
+
+    print(spark.sql("""
+    SELECT c.city, c.race, count(c.foreign_born) foreing_born
+    FROM fact f inner join city c on f.i94addr = c.state_code
+    GROUP BY c.city, c.race
+    ORDER BY count(c.foreign_born) desc
+    """).limit(10).toPandas())
 
     
 def process_qa(spark, input_qa):
     """
-    It handles the call of the fact table process.
+    It handles the call of the fact table process. 
     
     Parameters
     ----------
