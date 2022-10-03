@@ -634,10 +634,10 @@ def process_fact(spark, input_dim_data, output_fact_data):
     """)
 
     print(spark.sql("""
-    SELECT c.city, c.race, count(c.foreign_born) foreing_born
+    SELECT c.city, c.race, count(c.*) foreing_born
     FROM fact f inner join cty c on f.i94addr = c.state_code
     GROUP BY c.city, c.race
-    ORDER BY count(c.foreign_born) desc
+    ORDER BY count(c.*) desc
     """).limit(10).toPandas())
 
     
